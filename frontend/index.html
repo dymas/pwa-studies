@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registrar Service Worker</title>
+    <link rel="shortcut icon" href="/assets/pwa.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+  </head>
+  <body>
+    <h1>Olá</h1>
+
+    <img
+      src="https://developer.mozilla.org/static/media/mdn_contributor.14a24dcfda486f000754.png"
+    />
+
+    <img src="/assets/cowboybebop.jpg" />
+
+    <video controls>
+      <source src="https://betacraft.uk/assets/trailer.mp4" />
+    </video>
+
+    <video controls>
+      <source src="/assets/trailer.mp4" />
+    </video>
+
+    <script>
+      navigator.serviceWorker.register('/sw.js').then((registration) => {
+        console.log('Service worker registrado.');
+      });
+    </script>
+  </body>
+</html>
