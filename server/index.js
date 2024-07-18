@@ -32,6 +32,6 @@ app.post('/sendNotification', (req, res) => {
   webpush.sendNotification(subscription, payload, { TTL: 60 });
 });
 
-app.listen(port, () => {
+app.listen(port, '0.0.0.0', () => {
   console.log(`App listening on port ${port}`);
 });

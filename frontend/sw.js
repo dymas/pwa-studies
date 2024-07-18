@@ -23,6 +23,7 @@ self.addEventListener('install', (event) => {
       .then((cache) => cache.addAll(routes.values()))
       .catch((error) => console.log(error))
   );
+  self.skipWaiting();
 });
 
 /* Controle de requisições: intercepte a requisição e, 

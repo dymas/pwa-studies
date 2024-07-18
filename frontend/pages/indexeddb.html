@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>IndexedDB</title>
+    <link rel="shortcut icon" href="/assets/pwa.png" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"
+    />
+  </head>
+  <body>
+    <h1>IndexedDB</h1>
+    <button id="getObjectSubscription" disabled>Armazenar objeto</button>
+    <script>
+      const openRequest = indexedDB.open("mydb", 5);
+      const getObj = document.getElementById("getObjectSubscription");
+      let db;
+
+      openRequest.onupgradeneeded = (event) => {
+        db = event.target.result;
+
+        db.onerror = (event) => {
+          console.log("Error opening database", event.target.error);
+        };
+
+        if (!db.objectStoreNames.contains("subscription")) {
+          db.createObjectStore("subscription", { autoIncrement: true });
+        }
+      };
+
+      openRequest.onsuccess = (event) => {
+        db = openRequest.result;
+        console.log("Database initialized.");
+      };
+
+      navigator.serviceWorker.ready.then((registration) => {
+        return registration.pushManager
+          .getSubscription()
+          .then((subscription) => {
+            if (subscription) {
+              getObj.disabled = false;
+
+              getObj.addEventListener("click", () => {
+                const transaction = db
+                  .transaction("subscription", "readwrite")
+                  .objectStore("subscription");
+
+                transaction.add(subscription.toJSON());
+
+                transaction.onsuccess = () => {
+                  console.log("Subscription stored", transaction.result);
+                };
+
+                transaction.onerror = () => {
+                  console.error(
+                    "Error storing subscription",
+                    transaction.error,
+                  );
+                };
+              });
+            }
+          });
+      });
+    </script>
+  </body>
+</html>
